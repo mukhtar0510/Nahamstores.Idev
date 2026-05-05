@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart - Naham Store</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-image: url(logo.png);
+            color: #333;
+            line-height: 1.6;
+            background-size: cover;
+        }
+        
+        header {
+            background-color: #6a0dad;
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        .page-title {
+            margin: 30px 0;
+            color: #6a0dad;
+        }
+        
+        .cart-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+        
+        .cart-items {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .cart-summary {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            height: fit-content;
+        }
+        
+        .cart-item {
+            display: grid;
+            grid-template-columns: 100px 1fr auto;
+            gap: 20px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        
+        .cart-item-image {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+        
+        .cart-item-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .cart-item-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .cart-item-category {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+        }
+        
+        .cart-item-quantity button {
+            width: 25px;
+            height: 25px;
+            background-color: #f0e6ff;
+            color: #6a0dad;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .cart-item-quantity input {
+            width: 40px;
+            height: 25px;
+            text-align: center;
+            margin: 0 5px;
+            border: 1px solid #ddd;
+        }
+        
+        .cart-item-price {
+            text-align: right;
+            font-weight: 600;
+            color: #6a0dad;
+        }
+        
+        .cart-item-remove {
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .summary-title {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #6a0dad;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .summary-total {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: 15px;
+        }
+        
+        .checkout-btn {
+            width: 100%;
+            background-color: #6a0dad;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        
+        .empty-cart {
+            text-align: center;
+            padding: 50px 0;
+            grid-column: 1 / -1;
+        }
+        
+        .continue-shopping {
+            display: inline-block;
+            margin-top: 20px;
+            color: #6a0dad;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">Naham Stores</div>
+            <nav>
+                <ul>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                    <li><a href="costumer.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        <h1 class="page-title">Your Shopping Cart</h1>
+        
+        <div class="cart-container" id="cartContainer">
+            <!-- Cart items will be loaded here -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cartContainer = document.getElementById('cartContainer');
+            
+            function loadCart() {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const products = JSON.parse(localStorage.getItem('products')) || [];
+                
+                if (cart.length === 0) {
+                    cartContainer.innerHTML = `
+                        <div class="empty-cart">
+                            <h3>Your cart is empty</h3>
+                            <p>You haven't added any items to your cart yet.</p>
+                            <a href="products.html" class="continue-shopping">Continue Shopping</a>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Match cart items with product details
+                const cartItems = cart.map(item => {
+                    const product = products.find(p => p.id === item.productId);
+                    return {
+                        ...item,
+                        product
+                    };
+                }).filter(item => item.product); // Remove items if product not found
+                
+                // Calculate totals
+                const subtotal = cartItems.reduce((sum, item) => {
+                    return sum + (item.product.price * item.quantity);
+                }, 0);
+                
+                const shipping = subtotal > 50000 ? 0 : 1500; // Free shipping over ₦50,000
+                const total = subtotal + shipping;
+                
+                // Render cart items
+                let cartItemsHTML = '';
+                cartItems.forEach(item => {
+                    cartItemsHTML += `
+                        <div class="cart-item" data-id="${item.productId}">
+                            <img src="${item.product.images[0]}" class="cart-item-image">
+                            <div class="cart-item-details">
+                                <div class="cart-item-title">${item.product.name}</div>
+                                <div class="cart-item-category">${item.product.category}</div>
+                                <div class="cart-item-remove" onclick="removeFromCart(${item.productId})">Remove</div>
+                            </div>
+                            <div class="cart-item-quantity">
+                                <button onclick="updateQuantity(${item.productId}, ${item.quantity - 1})">-</button>
+                                <input type="number" value="${item.quantity}" min="1" 
+                                       onchange="updateQuantity(${item.productId}, parseInt(this.value))">
+                                <button onclick="updateQuantity(${item.productId}, ${item.quantity + 1})">+</button>
+                            </div>
+                            <div class="cart-item-price">₦${(item.product.price * item.quantity).toLocaleString()}</div>
+                        </div>
+                    `;
+                });
+                
+                // Render cart summary
+                const summaryHTML = `
+                    <div class="summary-title">Order Summary</div>
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span>₦${subtotal.toLocaleString()}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span>${shipping === 0 ? 'FREE' : '₦'+shipping.toLocaleString()}</span>
+                    </div>
+                    <div class="summary-row summary-total">
+                        <span>Total</span>
+                        <span>₦${total.toLocaleString()}</span>
+                    </div>
+                    <button class="checkout-btn" onclick="proceedToCheckout()">Proceed to Checkout</button>
+                `;
+                
+                cartContainer.innerHTML = `
+                    <div class="cart-items">
+                        ${cartItemsHTML}
+                    </div>
+                    <div class="cart-summary">
+                        ${summaryHTML}
+                    </div>
+                `;
+            }
+            
+            // Initial load
+            loadCart();
+        });
+        
+        function updateQuantity(productId, newQuantity) {
+            if (newQuantity < 1) return;
+            
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const item = cart.find(item => item.productId === productId);
+            
+            if (item) {
+                item.quantity = newQuantity;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                document.querySelector('script').dispatchEvent(new Event('DOMContentLoaded'));
+            }
+        }
+        
+        function removeFromCart(productId) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart = cart.filter(item => item.productId !== productId);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            document.querySelector('script').dispatchEvent(new Event('DOMContentLoaded'));
+        }
+        
+        function proceedToCheckout() {
+            // In a real app, this would redirect to a checkout page
+            alert('Proceeding to checkout! This would connect to a payment gateway in a real application.');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Admin Dashboard | Naham Stores</title>
+    <style>
+        /* ===== GLOBAL STYLES - MATCHING PROFILE PAGE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6a0dad;
+            --primary-dark: #4b0082;
+            --primary-light: #f0e6ff;
+            --secondary: #E67E22;
+            --secondary-light: #fdf2e6;
+            --dark: #1e1e2f;
+            --card-radius: 28px;
+            --shadow-sm: 0 12px 28px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 20px 32px rgba(106, 13, 173, 0.12);
+        }
+
+        body {
+         background-image: url(logo.png);
+           background-size: cover;
+            font-family: system-ui, 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            color: var(--dark);
+            line-height: 1.4;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(145deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.08);
+            border-radius: 0 32px 32px 0;
+            margin-right: 20px;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 16px;
+        }
+
+        .sidebar-header h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #fff 0%, var(--secondary) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .sidebar-menu ul {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 6px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            color: #e0c8f5;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            font-weight: 500;
+            border-radius: 40px;
+            margin: 0 12px;
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: rgba(255,255,255,0.15);
+            color: white;
+            transform: translateX(4px);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            flex: 1;
+            padding: 20px 28px 40px 20px;
+            background: transparent;
+        }
+
+        /* COMPACT HEADER - reduced padding, tighter elements */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 8px 24px;
+            border-radius: 60px;
+            margin-bottom: 28px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(106,13,173,0.08);
+        }
+
+        .header h2 {
+            color: var(--primary);
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header h2::before {
+            content: "👋";
+            font-size: 1.2rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--primary-light);
+            padding: 4px 16px 4px 10px;
+            border-radius: 50px;
+        }
+
+        .user-info img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .user-info span {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.85rem;
+        }
+
+        /* TABS */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            background: white;
+            padding: 6px;
+            border-radius: 80px;
+            margin-bottom: 28px;
+            box-shadow: var(--shadow-sm);
+            width: fit-content;
+        }
+
+        .tab {
+            padding: 8px 24px;
+            cursor: pointer;
+            border-radius: 40px;
+            font-weight: 600;
+            transition: all 0.2s;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 10px rgba(106,13,173,0.3);
+        }
+
+        /* CARDS */
+        .card {
+            background: white;
+            border-radius: var(--card-radius);
+            box-shadow: var(--shadow-sm);
+            padding: 24px 28px;
+            margin-bottom: 28px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid rgba(106,13,173,0.06);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-header {
+            padding-bottom: 14px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .card-header h3 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.85rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e2e2e2;
+            border-radius: 20px;
+            font-size: 14px;
+            transition: all 0.2s;
+            background: #fefefe;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(106,13,173,0.1);
+        }
+
+        textarea.form-control {
+            min-height: 90px;
+            resize: vertical;
+            border-radius: 20px;
+        }
+
+        .image-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .image-preview {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            border: 2px solid white;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-image {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(230,126,34,0.85);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+
+        .remove-image:hover {
+            background: #e74c3c;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 6px rgba(106,13,173,0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(106,13,173,0.25);
+        }
+
+        .btn-secondary {
+            background: #f0e6ff;
+            color: var(--primary);
+            margin-left: 12px;
+        }
+
+        .btn-secondary:hover {
+            background: #e0ccf5;
+        }
+
+        /* Data Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .data-table th, .data-table td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid #f0e6ff;
+        }
+
+        .data-table th {
+            background-color: var(--primary-light);
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.8rem;
+        }
+
+        .data-table tr:hover {
+            background-color: #faf5ff;
+        }
+
+        .data-table img {
+            width: 45px;
+            height: 45px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 6px;
+        }
+
+        .edit-btn, .delete-btn {
+            padding: 5px 12px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .edit-btn {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background: #d35400;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                border-radius: 0 0 28px 28px;
+                padding: 12px;
+            }
+            .sidebar-menu ul {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+            .sidebar-menu a {
+                padding: 6px 14px;
+                margin: 0;
+            }
+            .main-content {
+                padding: 16px;
+            }
+            .header {
+                padding: 6px 18px;
+            }
+            .tabs {
+                flex-wrap: wrap;
+                width: 100%;
+                justify-content: center;
+            }
+            .card {
+                padding: 18px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .header {
+                flex-direction: column;
+                gap: 8px;
+                align-items: stretch;
+                text-align: center;
+                border-radius: 32px;
+            }
+            .user-info {
+                justify-content: center;
+                width: fit-content;
+                margin: 0 auto;
+            }
+            .action-buttons {
+                flex-direction: column;
+                gap: 4px;
+            }
+            .data-table th, .data-table td {
+                padding: 8px 6px;
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3>🍳 Naham Stores<br><span style="font-size: 0.7rem;">Admin Panel</span></h3>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li><a href="index.html" class="active"><i>📊</i> Dashboard</a></li>
+                <li><a href="products.html"><i>🛍️</i> Home Page</a></li>
+                <li><a href="admin.html"><i>✉️</i> Messages</a></li>
+                <li><a href="admin orders.html"><i>📦</i> Orders</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!-- COMPACT HEADER - cleaned, tighter spacing -->
+        <div class="header">
+            <h2>Welcome, Admin</h2>
+            <div class="user-info">
+                <img src="logo.png" alt="Admin" onerror="this.src='https://via.placeholder.com/32?text=NA'">
+                <span>Administrator</span>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="products">📦 Manage Products</div>
+        </div>
+
+        <!-- Products Tab Content -->
+        <div id="products" class="tab-content active">
+            <div class="card">
+                <div class="card-header">
+                    <h3>➕ Add New Product</h3>
+                </div>
+                <form id="productForm">
+                    <div class="form-group">
+                        <label for="productName">Product Name</label>
+                        <input type="text" id="productName" class="form-control" placeholder="e.g., Stainless Steel Pan" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productCategory">Category</label>
+                        <select id="productCategory" class="form-control" required>
+                            <option value="">Select Category</option>
+                            <option value="cookware">🍲 Cookware</option>
+                            <option value="cutlery">🔪 Cutlery</option>
+                            <option value="bakeware">🧁 Bakeware</option>
+                            <option value="storage">📦 Storage</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productPrice">Price (₦)</label>
+                        <input type="number" id="productPrice" class="form-control" placeholder="e.g., 4500" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productQuantity">Stock Quantity</label>
+                        <input type="number" id="productQuantity" class="form-control" placeholder="e.g., 25" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productDescription">Description</label>
+                        <textarea id="productDescription" class="form-control" placeholder="Describe the product details..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productImages">📸 Product Images (multiple)</label>
+                        <input type="file" id="productImages" class="form-control" multiple accept="image/*">
+                        <div class="image-preview-container" id="imagePreview"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">💾 Save Product</button>
+                        <button type="reset" class="btn btn-secondary">⟳ Reset</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>📋 Product Inventory</h3>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Price (₦)</th>
+                                <th>Stock</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productList">
+                            <!-- dynamic rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    const tabId = this.getAttribute('data-tab');
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Image preview
+            const productImagesInput = document.getElementById('productImages');
+            const imagePreviewContainer = document.getElementById('imagePreview');
+            
+            productImagesInput.addEventListener('change', function() {
+                imagePreviewContainer.innerHTML = '';
+                if (this.files.length > 0) {
+                    Array.from(this.files).forEach(file => {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const previewDiv = document.createElement('div');
+                            previewDiv.className = 'image-preview';
+                            previewDiv.innerHTML = `
+                                <img src="${e.target.result}" alt="preview">
+                                <button class="remove-image" type="button">✕</button>
+                            `;
+                            imagePreviewContainer.appendChild(previewDiv);
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                }
+            });
+            
+            imagePreviewContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-image')) {
+                    e.target.parentElement.remove();
+                    if (productImagesInput.files.length && imagePreviewContainer.children.length === 0) {
+                        productImagesInput.value = '';
+                    }
+                }
+            });
+            
+            // Product data management
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+            const productForm = document.getElementById('productForm');
+            const productList = document.getElementById('productList');
+            
+            function escapeHtml(str) {
+                if (!str) return '';
+                return str.replace(/[&<>]/g, function(m) {
+                    if (m === '&') return '&amp;';
+                    if (m === '<') return '&lt;';
+                    if (m === '>') return '&gt;';
+                    return m;
+                });
+            }
+            
+            function renderProducts() {
+                if (!productList) return;
+                productList.innerHTML = '';
+                if (products.length === 0) {
+                    const emptyRow = document.createElement('tr');
+                    emptyRow.innerHTML = `<td colspan="6" style="text-align:center; padding:32px;">✨ No products yet. Add your first product above! ✨</td>`;
+                    productList.appendChild(emptyRow);
+                    return;
+                }
+                products.forEach(product => {
+                    const row = document.createElement('tr');
+                    const firstImage = (product.images && product.images.length) ? product.images[0] : 'https://via.placeholder.com/45?text=No+Img';
+                    row.innerHTML = `
+                        <td><img src="${firstImage}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/45?text=Err'"></td>
+                        <td><strong>${escapeHtml(product.name)}</strong></td>
+                        <td>${escapeHtml(product.category)}</td>
+                        <td>₦${Number(product.price).toLocaleString()}</td>
+                        <td>${product.quantity}</td>
+                        <td class="action-buttons">
+                            <button class="edit-btn" data-id="${product.id}">✏️ Edit</button>
+                            <button class="delete-btn" data-id="${product.id}">🗑️ Delete</button>
+                        </td>
+                    `;
+                    productList.appendChild(row);
+                });
+                
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', () => editProductById(parseInt(btn.getAttribute('data-id'))));
+                });
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', () => deleteProductById(parseInt(btn.getAttribute('data-id'))));
+                });
+            }
+            
+            function editProductById(id) {
+                const product = products.find(p => p.id === id);
+                if (!product) return;
+                
+                document.getElementById('productName').value = product.name;
+                document.getElementById('productCategory').value = product.category;
+                document.getElementById('productPrice').value = product.price;
+                document.getElementById('productQuantity').value = product.quantity;
+                document.getElementById('productDescription').value = product.description;
+                
+                let idField = document.getElementById('productId');
+                if (!idField) {
+                    idField = document.createElement('input');
+                    idField.type = 'hidden';
+                    idField.id = 'productId';
+                    productForm.appendChild(idField);
+                }
+                idField.value = product.id;
+                
+                imagePreviewContainer.innerHTML = '';
+                if (product.images && product.images.length) {
+                    product.images.forEach(imgSrc => {
+                        const previewDiv = document.createElement('div');
+                        previewDiv.className = 'image-preview';
+                        previewDiv.innerHTML = `<img src="${imgSrc}" alt="product"><button class="remove-image" type="button">✕</button>`;
+                        imagePreviewContainer.appendChild(previewDiv);
+                    });
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            
+            function deleteProductById(id) {
+                if (confirm('⚠️ Delete this product permanently?')) {
+                    products = products.filter(p => p.id !== id);
+                    localStorage.setItem('products', JSON.stringify(products));
+                    renderProducts();
+                    const hiddenId = document.getElementById('productId');
+                    if (hiddenId && parseInt(hiddenId.value) === id) {
+                        productForm.reset();
+                        imagePreviewContainer.innerHTML = '';
+                        hiddenId.remove();
+                    }
+                }
+            }
+            
+            productForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const idField = document.getElementById('productId');
+                const id = idField ? parseInt(idField.value) : Date.now();
+                const name = document.getElementById('productName').value.trim();
+                const category = document.getElementById('productCategory').value;
+                const price = parseFloat(document.getElementById('productPrice').value);
+                const quantity = parseInt(document.getElementById('productQuantity').value);
+                const description = document.getElementById('productDescription').value.trim();
+                
+                if (!name || !category || isNaN(price) || isNaN(quantity)) {
+                    alert('Please fill all fields correctly.');
+                    return;
+                }
+                
+                const images = [];
+                const previewImgs = imagePreviewContainer.querySelectorAll('.image-preview img');
+                previewImgs.forEach(img => { if (img.src) images.push(img.src); });
+                if (images.length === 0) images.push('https://via.placeholder.com/300?text=Naham+Product');
+                
+                const product = { id, name, category, price, quantity, description, images };
+                const existingIndex = products.findIndex(p => p.id === id);
+                if (existingIndex >= 0) products[existingIndex] = product;
+                else products.push(product);
+                
+                localStorage.setItem('products', JSON.stringify(products));
+                renderProducts();
+                productForm.reset();
+                imagePreviewContainer.innerHTML = '';
+                if (idField) idField.remove();
+                alert('✅ Product saved successfully!');
+            });
+            
+            document.querySelector('button[type="reset"]')?.addEventListener('click', function() {
+                const hidden = document.getElementById('productId');
+                if (hidden) hidden.remove();
+                imagePreviewContainer.innerHTML = '';
+            });
+            
+            renderProducts();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Register | Naham Stores</title>
+    <style>
+        /* ===== GLOBAL STYLES - MATCHING PROFILE PAGE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6a0dad;
+            --primary-dark: #4b0082;
+            --primary-light: #f0e6ff;
+            --secondary: #E67E22;
+            --secondary-light: #fdf2e6;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --dark: #1e1e2f;
+            --card-radius: 28px;
+            --shadow-sm: 0 12px 28px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cGF0aCBmaWxsPSIjZjBlNmZmIiBmaWxsLW9wYWNpdHk9IjAuMTUiIGQ9Ik0wIDBoNDB2NDBIMHoiLz48cGF0aCBkPSJNMjAgMTBhMTAgMTAgMCAwIDEgMCAyMCAxMCAxMCAwIDAgMSAwLTIweiIgZmlsbD0iI2U2N2UyMiIgZmlsbC1vcGFjaXR5PSIwLjA2Ii8+PC9zdmc+') repeat;
+            background-color: #faf7fc;
+            background-size: 32px 32px;
+            font-family: system-ui, 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .register-card {
+            background: white;
+            border-radius: var(--card-radius);
+            width: 100%;
+            max-width: 480px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(106,13,173,0.1);
+            transition: transform 0.2s;
+        }
+
+        .register-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .register-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 32px;
+            text-align: center;
+        }
+
+        .register-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .register-header p {
+            opacity: 0.9;
+            font-size: 0.85rem;
+        }
+
+        .register-body {
+            padding: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.85rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e2e2e2;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(106,13,173,0.1);
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .register-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(106,13,173,0.25);
+        }
+
+        /* Google Button */
+        .google-btn {
+            width: 100%;
+            padding: 12px;
+            background: white;
+            color: #444;
+            border: 1px solid #ddd;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .google-btn:hover {
+            background: #f8f8f8;
+            border-color: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 24px 0;
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #eee;
+        }
+
+        .divider span {
+            margin: 0 12px;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 30px;
+            text-align: center;
+            display: none;
+            font-size: 0.85rem;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 0.85rem;
+        }
+
+        .login-link a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 50px;
+            z-index: 1100;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-card">
+        <div class="register-header">
+            <h1>🍳 Welcome to Naham Stores</h1>
+            <p>Create an account to track orders & get support</p>
+        </div>
+        
+        <div class="register-body">
+            <form id="registerForm">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="fullName" placeholder="Enter your full name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email" placeholder="you@example.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="phone" placeholder="+234 XXX XXX XXX" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="Create a password (min 6 characters)">
+                </div>
+                
+                <button type="submit" class="register-btn">📝 Create Account →</button>
+            </form>
+            
+            <div class="divider">
+                <span>OR</span>
+            </div>
+            
+            <button class="google-btn" onclick="signInWithGoogle()">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Sign in with Google
+            </button>
+            
+            <div id="messageBox" class="message"></div>
+            
+            <div class="login-link">
+                Already have an account? <a href="#" onclick="loginExistingUser()">Login here</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Google Sign-In
+        function initGoogleSignIn() {
+            // Load Google Identity Services
+            const script = document.createElement('script');
+            script.src = 'https://accounts.google.com/gsi/client';
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+        }
+
+        // Google Sign-In handler
+        window.signInWithGoogle = function() {
+            // For demo purposes, simulate Google sign-in
+            // In production, you would use Google's actual OAuth
+            const fakeGoogleUser = {
+                name: prompt("Enter your Google account name (Demo):", "John Doe") || "Google User",
+                email: prompt("Enter your Google email (Demo):", "user@gmail.com") || "user@gmail.com",
+                picture: "https://ui-avatars.com/api/?background=6a0dad&color=fff&rounded=true&size=100&bold=true&name=" + encodeURIComponent("Google User")
+            };
+            
+            if (fakeGoogleUser.name && fakeGoogleUser.email) {
+                const userId = 'google_' + Date.now();
+                const userData = {
+                    id: userId,
+                    name: fakeGoogleUser.name,
+                    email: fakeGoogleUser.email,
+                    phone: '',
+                    nickname: fakeGoogleUser.name.split(' ')[0],
+                    profilePicture: fakeGoogleUser.picture,
+                    authProvider: 'google',
+                    createdAt: new Date().toISOString()
+                };
+                
+                // Save user data
+                let users = JSON.parse(localStorage.getItem('store_users')) || [];
+                const existing = users.find(u => u.email === userData.email);
+                if (!existing) {
+                    users.push(userData);
+                    localStorage.setItem('store_users', JSON.stringify(users));
+                }
+                
+                localStorage.setItem('currentUserId', userData.id);
+                localStorage.setItem('currentUser', JSON.stringify(userData));
+                
+                showMessage('✅ Google Sign-In successful! Redirecting...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'user-profile.html';
+                }, 1500);
+            }
+        };
+
+        // Regular registration
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            
+            if (!name || !email || !phone) {
+                showMessage('Please fill all required fields', 'error');
+                return;
+            }
+            
+            // Check if user already exists
+            let users = JSON.parse(localStorage.getItem('store_users')) || [];
+            const existingUser = users.find(u => u.email === email);
+            
+            if (existingUser) {
+                showMessage('User with this email already exists. Please login.', 'error');
+                return;
+            }
+            
+            const userId = 'user_' + Date.now();
+            const userData = {
+                id: userId,
+                name: name,
+                email: email,
+                phone: phone,
+                nickname: name.split(' ')[0],
+                profilePicture: `https://ui-avatars.com/api/?background=6a0dad&color=fff&rounded=true&size=100&bold=true&name=${encodeURIComponent(name)}`,
+                authProvider: 'local',
+                createdAt: new Date().toISOString()
+            };
+            
+            users.push(userData);
+            localStorage.setItem('store_users', JSON.stringify(users));
+            localStorage.setItem('currentUserId', userId);
+            localStorage.setItem('currentUser', JSON.stringify(userData));
+            
+            showMessage('✅ Registration successful! Redirecting to your profile...', 'success');
+            setTimeout(() => {
+                window.location.href = 'user-profile.html';
+            }, 1500);
+        });
+        
+        function loginExistingUser() {
+            const email = prompt('Enter your email address:');
+            if (email) {
+                let users = JSON.parse(localStorage.getItem('store_users')) || [];
+                const user = users.find(u => u.email === email);
+                
+                if (user) {
+                    localStorage.setItem('currentUserId', user.id);
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    window.location.href = 'user-profile.html';
+                } else {
+                    showMessage('User not found. Please register first.', 'error');
+                }
+            }
+        }
+        
+        function showMessage(msg, type) {
+            const box = document.getElementById('messageBox');
+            box.textContent = msg;
+            box.className = `message ${type}`;
+            setTimeout(() => {
+                box.style.display = 'none';
+                box.className = 'message';
+            }, 3000);
+        }
+        
+        // Initialize
+        initGoogleSignIn();
+    </script>
+</body>
+</html>

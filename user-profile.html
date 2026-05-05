@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>My Profile | Naham Stores</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6a0dad;
+            --primary-dark: #4b0082;
+            --primary-light: #f0e6ff;
+            --secondary: #E67E22;
+            --secondary-light: #fdf2e6;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --info: #3498db;
+            --dark: #1e1e2f;
+            --card-radius: 28px;
+            --shadow-sm: 0 12px 28px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 20px 32px rgba(106, 13, 173, 0.12);
+        }
+
+        body {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgdmlld0JveD0iMCAwIDQwIDQwIj48cGF0aCBmaWxsPSIjZjBlNmZmIiBmaWxsLW9wYWNpdHk9IjAuMTUiIGQ9Ik0wIDBoNDB2NDBIMHoiLz48cGF0aCBkPSJNMjAgMTBhMTAgMTAgMCAwIDEgMCAyMCAxMCAxMCAwIDAgMSAwLTIweiIgZmlsbD0iI2U2N2UyMiIgZmlsbC1vcGFjaXR5PSIwLjA2Ii8+PC9zdmc+') repeat;
+            background-color: #faf7fc;
+            background-size: 32px 32px;
+            font-family: system-ui, 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            color: var(--dark);
+            line-height: 1.4;
+        }
+
+        /* Header */
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            background: white;
+            padding: 8px 20px;
+            border-radius: 60px;
+            margin: 12px 16px 0 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(106,13,173,0.08);
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.2rem;
+            list-style: none;
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            font-weight: 500;
+            color: var(--dark);
+            transition: 0.2s;
+            padding: 4px 0;
+            font-size: 0.85rem;
+        }
+
+        .nav-links li a:hover {
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .cart-icon {
+            font-size: 1.3rem;
+            cursor: pointer;
+            background: var(--primary-light);
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 40px;
+            transition: 0.2s;
+            position: relative;
+            text-decoration: none;
+            color: var(--dark);
+        }
+
+        .cart-icon:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: var(--secondary);
+            color: white;
+            font-size: 0.6rem;
+            font-weight: bold;
+            width: 18px;
+            height: 18px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logout-btn {
+            padding: 6px 14px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.75rem;
+            transition: 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+            transform: translateY(-1px);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1280px;
+            margin: 20px auto;
+            padding: 0 16px 80px 16px;
+        }
+
+        /* Profile Layout - Mobile First */
+        .profile-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        @media (min-width: 900px) {
+            .profile-layout {
+                display: grid;
+                grid-template-columns: 350px 1fr;
+                gap: 28px;
+            }
+            .container {
+                padding: 0 24px 80px 24px;
+                margin: 28px auto;
+            }
+            .header-container {
+                padding: 8px 24px;
+                margin: 16px 20px 0 20px;
+            }
+            .logo {
+                font-size: 1.5rem;
+            }
+            .nav-links {
+                gap: 2rem;
+            }
+            .nav-links li a {
+                font-size: 1rem;
+            }
+        }
+
+        .profile-sidebar {
+            background: white;
+            border-radius: var(--card-radius);
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(106,13,173,0.06);
+        }
+
+        @media (min-width: 900px) {
+            .profile-sidebar {
+                padding: 28px;
+                position: sticky;
+                top: 20px;
+                height: fit-content;
+            }
+        }
+
+        .profile-pic-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 16px;
+        }
+
+        @media (min-width: 900px) {
+            .profile-pic-container {
+                width: 140px;
+                height: 140px;
+                margin: 0 auto 20px;
+            }
+        }
+
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        @media (min-width: 900px) {
+            .profile-pic {
+                border-width: 4px;
+            }
+        }
+
+        .upload-pic-btn {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (min-width: 900px) {
+            .upload-pic-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 1.2rem;
+                bottom: 5px;
+                right: 5px;
+            }
+        }
+
+        .profile-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        @media (min-width: 900px) {
+            .profile-name {
+                font-size: 1.4rem;
+                margin-bottom: 8px;
+            }
+        }
+
+        .profile-email {
+            color: #666;
+            font-size: 0.75rem;
+            margin-bottom: 12px;
+            word-break: break-all;
+        }
+
+        @media (min-width: 900px) {
+            .profile-email {
+                font-size: 0.85rem;
+                margin-bottom: 16px;
+            }
+        }
+
+        .nickname-section {
+            margin: 16px 0;
+            padding: 12px;
+            background: var(--primary-light);
+            border-radius: 20px;
+        }
+
+        @media (min-width: 900px) {
+            .nickname-section {
+                margin: 20px 0;
+                padding: 16px;
+            }
+        }
+
+        .nickname-input-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nickname-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 40px;
+            font-size: 0.8rem;
+        }
+
+        .save-nickname-btn {
+            padding: 6px 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        .cart-summary-mini {
+            background: var(--primary-light);
+            border-radius: 20px;
+            padding: 12px;
+            margin: 12px 0;
+            text-align: left;
+        }
+
+        @media (min-width: 900px) {
+            .cart-summary-mini {
+                padding: 16px;
+                margin: 16px 0;
+            }
+        }
+
+        .view-cart-link {
+            display: inline-block;
+            margin-top: 8px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        .notifications-section {
+            margin-top: 16px;
+            text-align: left;
+        }
+
+        @media (min-width: 900px) {
+            .notifications-section {
+                margin-top: 24px;
+            }
+        }
+
+        .notifications-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .notification-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        @media (min-width: 900px) {
+            .notification-list {
+                max-height: 280px;
+            }
+        }
+
+        .notification-item {
+            background: var(--secondary-light);
+            padding: 8px 10px;
+            border-radius: 14px;
+            margin-bottom: 6px;
+            font-size: 0.7rem;
+            border-left: 3px solid var(--secondary);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .notification-item:hover {
+            transform: translateX(3px);
+        }
+
+        .notification-item.unread {
+            background: #fff8e8;
+            border-left-color: var(--primary);
+            font-weight: 500;
+        }
+
+        .notification-text {
+            font-weight: 500;
+        }
+
+        .notification-date {
+            font-size: 0.6rem;
+            color: #888;
+            margin-top: 3px;
+        }
+
+        .profile-main {
+            background: white;
+            border-radius: var(--card-radius);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(106,13,173,0.06);
+        }
+
+        @media (min-width: 900px) {
+            .profile-main {
+                padding: 28px;
+            }
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        @media (min-width: 900px) {
+            .section-title {
+                font-size: 1.3rem;
+                margin-bottom: 20px;
+                padding-bottom: 12px;
+            }
+        }
+
+        .refresh-btn {
+            background: var(--primary-light);
+            border: none;
+            padding: 5px 12px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .orders-table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.7rem;
+            min-width: 500px;
+        }
+
+        @media (min-width: 900px) {
+            .orders-table {
+                font-size: 0.85rem;
+                min-width: auto;
+            }
+        }
+
+        .orders-table th {
+            padding: 8px;
+            text-align: left;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .orders-table td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .orders-table tr:hover {
+            background: #fefaf5;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        @media (min-width: 900px) {
+            .status-badge {
+                padding: 4px 10px;
+                font-size: 0.7rem;
+            }
+        }
+
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-processing { background: #cce5ff; color: #004085; }
+        .status-shipped { background: #d4edda; color: #155724; }
+        .status-delivered { background: #d1ecf1; color: #0c5460; }
+        .status-cancelled { background: #f8d7da; color: #721c24; }
+
+        .view-order-btn {
+            padding: 4px 8px;
+            background: var(--info);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.65rem;
+            white-space: nowrap;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px 20px;
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        .order-count-badge {
+            background: var(--secondary);
+            color: white;
+            border-radius: 30px;
+            padding: 2px 8px;
+            font-size: 0.65rem;
+            margin-left: 8px;
+        }
+
+        /* Mobile Bottom Navigation */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(230,126,34,0.2);
+            padding: 8px 16px;
+            justify-content: space-around;
+            z-index: 1000;
+        }
+
+        .mobile-nav .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--dark);
+            padding: 6px 0;
+            transition: 0.2s;
+        }
+
+        .mobile-nav .nav-item i {
+            font-size: 1.3rem;
+            margin-bottom: 3px;
+        }
+
+        .mobile-nav .nav-item:hover {
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .mobile-nav {
+                display: flex;
+            }
+            .container {
+                padding-bottom: 70px;
+            }
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            z-index: 1100;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        @media (min-width: 900px) {
+            .toast {
+                bottom: 30px;
+                white-space: normal;
+            }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            max-width: 550px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            margin: 20px;
+        }
+
+        @media (min-width: 900px) {
+            .modal-content {
+                border-radius: 32px;
+            }
+        }
+
+        .modal-header {
+            padding: 14px 18px;
+            background: var(--primary);
+            color: white;
+            border-radius: 24px 24px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 16px;
+        }
+
+        /* Contact Support Button */
+        .contact-support-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--secondary);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            width: 100%;
+            transition: 0.2s;
+        }
+
+        .contact-support-btn:hover {
+            background: #d35400;
+            transform: translateY(-2px);
+        }
+
+        @media (min-width: 900px) {
+            .contact-support-btn {
+                width: auto;
+                padding: 10px 20px;
+            }
+        }
+
+        /* Force Login Modal */
+        #forceLoginModal .modal-content {
+            max-width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="products.html" class="logo">🍳 Naham Stores</a>
+            <ul class="nav-links">
+                <li><a href="products.html">🏠 Home</a></li>
+                <li><a href="cart.html">🛒 Cart</a></li>
+                <li><a href="profile.html">💻 About</a></li>
+            </ul>
+            <div class="header-icons">
+                <div class="cart-icon" onclick="window.location.href='cart.html'">🛒<span class="cart-count" id="cartCount">0</span></div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="profile-layout" id="profileContainer"><div style="text-align:center;padding:50px;">Loading profile...</div></div>
+    </div>
+
+    <div class="mobile-nav">
+        <a href="products.html" class="nav-item"><i>🏠</i><span>Home</span></a>
+        <a href="cart.html" class="nav-item"><i>🛒</i><span>Cart</span></a>
+        <a href="user-chat.html" class="nav-item"><i>💬</i><span>Chat</span></a>
+        <a href="profile.html" class="nav-item"><i>👤</i><span>Profile</span></a>
+    </div>
+
+    <div id="toastMsg" class="toast" style="display:none"></div>
+    <div id="orderModal" class="modal"><div class="modal-content"><div class="modal-header"><h3>📦 Order Details</h3><button class="close-modal" onclick="closeOrderModal()">&times;</button></div><div class="modal-body" id="orderModalBody"></div></div></div>
+    <div id="forceLoginModal" class="modal" style="display:none;"><div class="modal-content" style="max-width:400px;text-align:center;"><div class="modal-header" style="background:var(--danger);"><h3>🔒 Login Required</h3><button class="close-modal" onclick="closeForceLoginModal()">&times;</button></div><div class="modal-body"><div style="font-size:3rem;margin:20px 0;">🔐</div><h3 style="color:var(--primary);margin-bottom:10px;">Please Sign In</h3><p style="color:#666;margin-bottom:20px;">Create an account to view your profile and orders.</p><button id="createAccountBtn" style="width:100%;padding:14px;background:var(--primary);color:white;border:none;border-radius:40px;font-weight:600;cursor:pointer;margin-bottom:10px;">📝 Create Account / Login</button><button onclick="redirectToProducts()" style="width:100%;padding:12px;background:transparent;border:1px solid var(--primary);color:var(--primary);border-radius:40px;cursor:pointer;">🛍️ Continue Shopping</button></div></div></div>
+
+    <script>
+        let currentUser = null;
+        let userNotifications = [];
+        let refreshInterval = null;
+
+        function isUserAuthenticated() {
+            const storedUser = localStorage.getItem('currentUser');
+            if (storedUser) {
+                try {
+                    currentUser = JSON.parse(storedUser);
+                    return true;
+                } catch(e) { return false; }
+            }
+            return false;
+        }
+
+        function showForceLoginModal() {
+            document.getElementById('forceLoginModal').style.display = 'flex';
+            document.getElementById('profileContainer').innerHTML = `<div style="text-align:center;padding:60px 20px;background:white;border-radius:var(--card-radius);"><div style="font-size:4rem;">🔒</div><h2 style="color:var(--primary);">Access Denied</h2><p>Please sign up to view your profile.</p><button onclick="redirectToRegister()" style="padding:12px 32px;background:var(--primary);color:white;border:none;border-radius:40px;cursor:pointer;margin-top:16px;">Create Account</button></div>`;
+        }
+
+        function closeForceLoginModal() { document.getElementById('forceLoginModal').style.display = 'none'; redirectToProducts(); }
+        function redirectToRegister() { window.location.href = 'register.html'; }
+        function redirectToProducts() { window.location.href = 'products.html'; }
+
+        function updateCartCount() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let total = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+            const countSpan = document.getElementById('cartCount');
+            if (countSpan) countSpan.innerText = total;
+        }
+
+        function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;'); }
+        function formatDate(dateString) { if (!dateString) return 'N/A'; const date = new Date(dateString); return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); }
+
+        function getStatusBadge(status) {
+            const map = { 'pending': '<span class="status-badge status-pending">⏳ Pending</span>', 'processing': '<span class="status-badge status-processing">⚙️ Processing</span>', 'shipped': '<span class="status-badge status-shipped">🚚 Shipped</span>', 'delivered': '<span class="status-badge status-delivered">✅ Delivered</span>', 'cancelled': '<span class="status-badge status-cancelled">❌ Cancelled</span>' };
+            return map[status] || `<span class="status-badge status-pending">${status}</span>`;
+        }
+
+        function showToast(message) { const toast = document.getElementById('toastMsg'); toast.textContent = message; toast.style.display = 'block'; setTimeout(() => toast.style.display = 'none', 3000); }
+
+        function getUserOrders() {
+            const allOrders = JSON.parse(localStorage.getItem('orders')) || [];
+            return allOrders.filter(order => order.customer && order.customer.email === currentUser?.email).sort((a, b) => new Date(b.date) - new Date(a.date));
+        }
+
+        function getUnreadMessageCount() {
+            const messages = JSON.parse(localStorage.getItem('chat_messages')) || [];
+            return messages.filter(m => m.from === 'admin' && m.to === currentUser?.id && !m.read).length;
+        }
+
+        function addNotification(message, type, link = null) {
+            const newNotif = { id: Date.now().toString(), message: message, type: type, link: link, date: new Date().toISOString(), read: false };
+            userNotifications.unshift(newNotif);
+            const allNotifications = JSON.parse(localStorage.getItem('user_notifications')) || {};
+            allNotifications[currentUser.id] = userNotifications;
+            localStorage.setItem('user_notifications', JSON.stringify(allNotifications));
+            renderProfile();
+            showToast(message);
+        }
+
+        function checkForOrderUpdates() {
+            if (!currentUser) return;
+            const userOrders = getUserOrders();
+            const lastCheckedKey = `last_order_check_${currentUser.id}`;
+            const lastChecked = localStorage.getItem(lastCheckedKey) || '{}';
+            let lastStatus = {};
+            try { lastStatus = JSON.parse(lastChecked); } catch(e) {}
+            userOrders.forEach(order => {
+                const prevStatus = lastStatus[order.orderId];
+                if (prevStatus && prevStatus !== order.status) {
+                    const statusMessages = { 'pending': '⏳ Order pending review', 'processing': '⚙️ Order being processed', 'shipped': '🚚 Order shipped!', 'delivered': '✅ Order delivered!', 'cancelled': '❌ Order cancelled' };
+                    addNotification(statusMessages[order.status] || `Order ${order.orderId}: ${order.status}`, 'order');
+                }
+                lastStatus[order.orderId] = order.status;
+            });
+            localStorage.setItem(lastCheckedKey, JSON.stringify(lastStatus));
+        }
+
+        function checkForNewMessages() {
+            if (!currentUser) return;
+            const messages = JSON.parse(localStorage.getItem('chat_messages')) || [];
+            const unreadFromAdmin = messages.filter(m => m.from === 'admin' && m.to === currentUser.id && !m.read);
+            if (unreadFromAdmin.length > 0) {
+                const lastMsg = unreadFromAdmin[unreadFromAdmin.length - 1];
+                addNotification(`💬 New message from Support: "${lastMsg.text.substring(0, 40)}${lastMsg.text.length > 40 ? '...' : ''}"`, 'message', 'user-chat.html');
+                let modified = false;
+                const updatedMessages = messages.map(msg => { if (msg.from === 'admin' && msg.to === currentUser.id && !msg.read) { modified = true; return { ...msg, read: true }; } return msg; });
+                if (modified) localStorage.setItem('chat_messages', JSON.stringify(updatedMessages));
+            }
+        }
+
+        function loadNotifications() {
+            const allNotifications = JSON.parse(localStorage.getItem('user_notifications')) || {};
+            userNotifications = allNotifications[currentUser.id] || [];
+        }
+
+        function markNotificationRead(notifId) {
+            const notif = userNotifications.find(n => n.id === notifId);
+            if (notif && !notif.read) {
+                notif.read = true;
+                const allNotifications = JSON.parse(localStorage.getItem('user_notifications')) || {};
+                allNotifications[currentUser.id] = userNotifications;
+                localStorage.setItem('user_notifications', JSON.stringify(allNotifications));
+                if (notif.link) window.location.href = notif.link;
+                renderProfile();
+            }
+        }
+
+        function clearAllNotifications() {
+            if (confirm('Clear all notifications?')) {
+                userNotifications = [];
+                const allNotifications = JSON.parse(localStorage.getItem('user_notifications')) || {};
+                allNotifications[currentUser.id] = [];
+                localStorage.setItem('user_notifications', JSON.stringify(allNotifications));
+                renderProfile();
+                showToast('All notifications cleared');
+            }
+        }
+
+        function viewOrderDetails(orderId) {
+            const allOrders = JSON.parse(localStorage.getItem('orders')) || [];
+            const order = allOrders.find(o => o.orderId === orderId);
+            if (!order) return;
+            const itemsHtml = (order.items || []).map(item => `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;flex-wrap:wrap;gap:5px;"><span>${escapeHtml(item.name)}</span><span>${item.quantity} × ₦${item.price.toLocaleString()}</span><span><strong>₦${(item.quantity * item.price).toLocaleString()}</strong></span></div>`).join('');
+            document.getElementById('orderModalBody').innerHTML = `<div style="margin-bottom:12px;"><strong>Order ID:</strong> ${order.orderId}</div><div style="margin-bottom:12px;"><strong>Date:</strong> ${formatDate(order.date)}</div><div style="margin-bottom:12px;"><strong>Status:</strong> ${getStatusBadge(order.status)}</div><div style="margin-bottom:12px;"><strong>Items:</strong></div><div style="margin-bottom:16px;">${itemsHtml || 'No items'}</div><div style="background:var(--primary-light);padding:12px;border-radius:16px;margin-bottom:16px;"><div style="display:flex;justify-content:space-between;flex-wrap:wrap;"><span>Subtotal:</span><span>₦${(order.subtotal || 0).toLocaleString()}</span></div><div style="display:flex;justify-content:space-between;flex-wrap:wrap;margin-top:5px;"><span>Shipping:</span><span>${order.shipping === 0 ? 'FREE' : '₦' + (order.shipping || 0).toLocaleString()}</span></div><div style="display:flex;justify-content:space-between;font-weight:700;margin-top:8px;padding-top:8px;border-top:1px solid rgba(106,13,173,0.2);flex-wrap:wrap;"><span>Total:</span><span style="color:var(--secondary);">₦${(order.total || 0).toLocaleString()}</span></div></div><div style="margin-bottom:12px;"><strong>Delivery Address:</strong><br>${escapeHtml(order.customer?.address || 'N/A')}</div><div><strong>Payment:</strong> ${order.payment?.method} (${order.payment?.status})</div>`;
+            document.getElementById('orderModal').style.display = 'flex';
+        }
+
+        function closeOrderModal() { document.getElementById('orderModal').style.display = 'none'; }
+
+        function renderProfile() {
+            loadNotifications();
+            const userOrders = getUserOrders();
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartTotal = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+            const unreadMsgCount = getUnreadMessageCount();
+            const unreadCount = userNotifications.filter(n => !n.read).length;
+
+            const container = document.getElementById('profileContainer');
+            const profilePic = currentUser.profilePicture || `https://ui-avatars.com/api/?background=6a0dad&color=fff&rounded=true&size=120&bold=true&name=${encodeURIComponent(currentUser.name)}`;
+            const nickname = currentUser.nickname || currentUser.name.split(' ')[0];
+
+            container.innerHTML = `
+                <div class="profile-sidebar">
+                    <div class="profile-pic-container"><img src="${profilePic}" class="profile-pic"><button class="upload-pic-btn" onclick="uploadProfilePicture()">📷</button></div>
+                    <div class="profile-name">${escapeHtml(currentUser.name)}</div>
+                    <div class="profile-email">${escapeHtml(currentUser.email)}</div>
+                    <div class="nickname-section"><div style="font-size:0.8rem;color:var(--primary);">Display Name</div><div class="nickname-input-group"><input type="text" id="nicknameInput" placeholder="Nickname" value="${escapeHtml(nickname)}"><button class="save-nickname-btn" onclick="saveNickname()">Save</button></div></div>
+                    <div class="cart-summary-mini"><strong>🛒 My Cart</strong><div style="margin-top:8px;">${cartTotal} item${cartTotal !== 1 ? 's' : ''} in cart</div><a href="cart.html" class="view-cart-link">View Cart →</a></div>
+                    <div class="notifications-section"><div class="notifications-title">🔔 Notifications ${unreadCount > 0 ? `<span class="order-count-badge">${unreadCount} new</span>` : ''}</div><div class="notification-list" id="notificationList">${renderNotifications()}</div><button class="clear-notifications" onclick="clearAllNotifications()" style="background:none;border:none;color:var(--danger);font-size:0.7rem;cursor:pointer;margin-top:8px;">Clear all</button></div>
+                </div>
+                <div class="profile-main">
+                    <div class="section-title">📦 My Orders <span class="order-count-badge">${userOrders.length} orders</span><button class="refresh-btn" onclick="refreshAll()">⟳ Refresh</button></div>
+                    <div class="orders-table-container">${renderOrdersTable(userOrders)}</div>
+                    <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--primary-light);"><a href="user-chat.html" class="contact-support-btn">💬 Contact Support ${unreadMsgCount > 0 ? `(${unreadMsgCount} unread)` : ''}</a></div>
+                </div>
+            `;
+        }
+
+        function renderNotifications() {
+            if (userNotifications.length === 0) return '<div style="text-align:center;color:#888;padding:10px;">No notifications</div>';
+            return userNotifications.map(n => `<div class="notification-item ${!n.read ? 'unread' : ''}" onclick="markNotificationRead('${n.id}')"><div class="notification-text">${escapeHtml(n.message)}</div><div class="notification-date">${formatDate(n.date)}</div></div>`).join('');
+        }
+
+        function renderOrdersTable(orders) {
+            if (orders.length === 0) return '<div class="empty-state">🛍️ No orders yet.<br><a href="products.html" style="color:var(--secondary);">Start Shopping →</a></div>';
+            return `<table class="orders-table"><thead><tr><th>Order ID</th><th>Date</th><th>Items</th><th>Total</th><th>Status</th><th>Action</th></tr></thead><tbody>${orders.map(order => `<tr><td><strong>${order.orderId}</strong></td><td>${formatDate(order.date)}</td><td>${order.items?.length || 0}</td><td><strong>₦${(order.total || 0).toLocaleString()}</strong></td><td>${getStatusBadge(order.status)}</td><td><button class="view-order-btn" onclick="viewOrderDetails('${order.orderId}')">View</button></td></tr>`).join('')}</tbody></table>`;
+        }
+
+        window.uploadProfilePicture = function() {
+            const input = document.createElement('input'); input.type = 'file'; input.accept = 'image/*';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) { const reader = new FileReader(); reader.onload = function(ev) { currentUser.profilePicture = ev.target.result; localStorage.setItem('currentUser', JSON.stringify(currentUser)); let users = JSON.parse(localStorage.getItem('store_users')) || []; const idx = users.findIndex(u => u.id === currentUser.id); if (idx !== -1) users[idx].profilePicture = ev.target.result; localStorage.setItem('store_users', JSON.stringify(users)); renderProfile(); showToast('Profile picture updated!'); }; reader.readAsDataURL(file); }
+            }; input.click();
+        };
+
+        window.saveNickname = function() {
+            const newNickname = document.getElementById('nicknameInput').value.trim();
+            if (newNickname) { currentUser.nickname = newNickname; localStorage.setItem('currentUser', JSON.stringify(currentUser)); let users = JSON.parse(localStorage.getItem('store_users')) || []; const idx = users.findIndex(u => u.id === currentUser.id); if (idx !== -1) users[idx].nickname = newNickname; localStorage.setItem('store_users', JSON.stringify(users)); renderProfile(); showToast('Nickname updated!'); }
+        };
+
+        function refreshAll() { checkForOrderUpdates(); checkForNewMessages(); renderProfile(); showToast('Refreshed!'); }
+        function logout() { localStorage.removeItem('currentUser'); localStorage.removeItem('currentUserId'); window.location.href = 'register.html'; }
+
+        function startAutoRefresh() { if (refreshInterval) clearInterval(refreshInterval); refreshInterval = setInterval(() => { if (currentUser) { checkForOrderUpdates(); checkForNewMessages(); renderProfile(); } }, 10000); }
+
+        window.addEventListener('storage', (e) => { if (e.key === 'orders' || e.key === 'chat_messages') { if (currentUser) { checkForOrderUpdates(); checkForNewMessages(); renderProfile(); } } });
+
+        if (!isUserAuthenticated()) { showForceLoginModal(); updateCartCount(); } else { renderProfile(); updateCartCount(); startAutoRefresh(); checkForOrderUpdates(); checkForNewMessages(); }
+
+        document.getElementById('createAccountBtn')?.addEventListener('click', () => window.location.href = 'register.html');
+        window.viewOrderDetails = viewOrderDetails; 
+        window.closeOrderModal = closeOrderModal; 
+        window.markNotificationRead = markNotificationRead;
+        window.refreshAll = refreshAll;
+    </script>
+</body>
+</html>

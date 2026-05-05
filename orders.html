@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders Management - Naham Stores</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6a0dad;
+            --primary-dark: #4b0082;
+            --primary-light: #f0e6ff;
+            --secondary: #ff9900;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --info: #3498db;
+            --gray: #f0f0f5;
+            --dark: #1e1e2f;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 16px 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logout-btn {
+            padding: 8px 20px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .stat-info h3 {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            opacity: 0.7;
+        }
+
+        /* Filters */
+        .filters-bar {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            color: #666;
+        }
+
+        select, input {
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 0.9rem;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-input input {
+            width: 100%;
+        }
+
+        /* Orders Table */
+        .orders-table-container {
+            background: white;
+            border-radius: 20px;
+            overflow-x: auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .orders-table th {
+            padding: 16px;
+            text-align: left;
+            background: var(--gray);
+            font-weight: 600;
+            color: var(--dark);
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .orders-table td {
+            padding: 16px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .orders-table tr:hover {
+            background: var(--primary-light);
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-processing {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .status-shipped {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-delivered {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Action Buttons */
+        .action-btns {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-view {
+            background: var(--info);
+            color: white;
+        }
+
+        .btn-update {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-delete {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 24px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 20px;
+            background: var(--primary);
+            color: white;
+            border-radius: 24px 24px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .order-detail-row {
+            display: flex;
+            margin-bottom: 12px;
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-detail-label {
+            font-weight: 600;
+            width: 120px;
+        }
+
+        .order-detail-value {
+            flex: 1;
+        }
+
+        .items-list {
+            margin-top: 16px;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: var(--gray);
+            margin-bottom: 8px;
+            border-radius: 12px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            .orders-table th, .orders-table td {
+                padding: 10px;
+                font-size: 0.8rem;
+            }
+            .action-btns {
+                flex-direction: column;
+            }
+            .btn-sm {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">📦 Naham Stores</div>
+        <div class="nav-links">
+            <a href="admin.html">💬 Messages</a>
+            <a href="orders.html" class="active">📦 Orders</a>
+            <a href="products.html">🛍️ Products</a>
+        </div>
+        <div class="admin-info">
+            <span>👑 Admin</span>
+            <button onclick="window.location.href='index.html'" class="logout-btn" id="logoutBtn">Logout</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Stats Cards -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>Total Orders</h3>
+                    <div class="stat-number" id="totalOrders">0</div>
+                </div>
+                <div class="stat-icon">📋</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>Pending</h3>
+                    <div class="stat-number" id="pendingOrders">0</div>
+                </div>
+                <div class="stat-icon">⏳</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>Processing</h3>
+                    <div class="stat-number" id="processingOrders">0</div>
+                </div>
+                <div class="stat-icon">⚙️</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>Delivered</h3>
+                    <div class="stat-number" id="deliveredOrders">0</div>
+                </div>
+                <div class="stat-icon">✅</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>Revenue (₦)</h3>
+                    <div class="stat-number" id="totalRevenue">0</div>
+                </div>
+                <div class="stat-icon">💰</div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-bar">
+            <div class="filter-group">
+                <label>Status:</label>
+                <select id="statusFilter">
+                    <option value="all">All Orders</option>
+                    <option value="pending">Pending</option>
+                    <option value="processing">Processing</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Sort by:</label>
+                <select id="sortBy">
+                    <option value="date_desc">Newest First</option>
+                    <option value="date_asc">Oldest First</option>
+                    <option value="amount_desc">Highest Amount</option>
+                    <option value="amount_asc">Lowest Amount</option>
+                </select>
+            </div>
+            <div class="search-input">
+                <input type="text" id="searchOrder" placeholder="🔍 Search by Order ID or Customer...">
+            </div>
+        </div>
+
+        <!-- Orders Table -->
+        <div class="orders-table-container">
+            <table class="orders-table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Items</th>
+                        <th>Total (₦)</th>
+                        <th>Status</th>
+                        <th>Payment</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="ordersTableBody">
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 40px;">Loading orders...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📋 Order Details</h3>
+                <button class="close-modal" onclick="closeModal()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">&times;</button>
+            </div>
+            <div class="modal-body" id="orderModalBody">
+                <!-- Order details will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Status Modal -->
+    <div id="updateModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ Update Order Status</h3>
+                <button class="close-modal" onclick="closeUpdateModal()" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label style="display:block;margin-bottom:8px;font-weight:600;">Order Status</label>
+                    <select id="updateStatusSelect" style="width:100%;padding:12px;border-radius:12px;border:1px solid #ddd;">
+                        <option value="pending">⏳ Pending</option>
+                        <option value="processing">⚙️ Processing</option>
+                        <option value="shipped">🚚 Shipped</option>
+                        <option value="delivered">✅ Delivered</option>
+                        <option value="cancelled">❌ Cancelled</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label style="display:block;margin-bottom:8px;font-weight:600;">Tracking Number (Optional)</label>
+                    <input type="text" id="trackingNumber" placeholder="Enter tracking number" style="width:100%;padding:12px;border-radius:12px;border:1px solid #ddd;">
+                </div>
+                <button onclick="confirmUpdateStatus()" style="width:100%;padding:12px;background:var(--primary);color:white;border:none;border-radius:12px;margin-top:16px;cursor:pointer;">Update Status</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample orders data (in production, this would come from server)
+        let orders = [];
+        let currentOrderId = null;
+
+        // Initialize sample orders
+        function initSampleOrders() {
+            const savedOrders = localStorage.getItem('orders');
+            if (savedOrders) {
+                orders = JSON.parse(savedOrders);
+            } else {
+                orders = [
+                    {
+                        id: 'ORD-1001',
+                        customer: { name: 'John Doe', email: 'john@example.com', phone: '+234 801 234 5678' },
+                        date: '2024-01-15T10:30:00',
+                        items: [
+                            { name: 'Premium Non-Stick Fry Pan', quantity: 1, price: 15999 },
+                            { name: 'Chef Knife', quantity: 2, price: 8999 }
+                        ],
+                        subtotal: 33997,
+                        shipping: 1500,
+                        total: 35497,
+                        status: 'delivered',
+                        payment: { method: 'Card', status: 'paid' },
+                        tracking: 'TN123456789',
+                        address: '123 Main St, Lagos, Nigeria'
+                    },
+                    {
+                        id: 'ORD-1002',
+                        customer: { name: 'Jane Smith', email: 'jane@example.com', phone: '+234 802 345 6789' },
+                        date: '2024-01-18T14:20:00',
+                        items: [
+                            { name: 'Stainless Steel Pot Set', quantity: 1, price: 24999 },
+                            { name: 'Wooden Utensil Set', quantity: 1, price: 7999 }
+                        ],
+                        subtotal: 32998,
+                        shipping: 0,
+                        total: 32998,
+                        status: 'shipped',
+                        payment: { method: 'Bank Transfer', status: 'paid' },
+                        tracking: 'TN987654321',
+                        address: '456 Oak Ave, Abuja, Nigeria'
+                    },
+                    {
+                        id: 'ORD-1003',
+                        customer: { name: 'Mike Johnson', email: 'mike@example.com', phone: '+234 803 456 7890' },
+                        date: '2024-01-20T09:15:00',
+                        items: [
+                            { name: 'Non-Stick Baking Tray', quantity: 3, price: 5999 }
+                        ],
+                        subtotal: 17997,
+                        shipping: 1500,
+                        total: 19497,
+                        status: 'pending',
+                        payment: { method: 'Cash on Delivery', status: 'pending' },
+                        address: '789 Pine Rd, Port Harcourt, Nigeria'
+                    },
+                    {
+                        id: 'ORD-1004',
+                        customer: { name: 'Sarah Williams', email: 'sarah@example.com', phone: '+234 804 567 8901' },
+                        date: '2024-01-22T16:45:00',
+                        items: [
+                            { name: 'Electric Blender', quantity: 1, price: 24999 },
+                            { name: 'Ceramic Knife Set', quantity: 1, price: 18999 }
+                        ],
+                        subtotal: 43998,
+                        shipping: 0,
+                        total: 43998,
+                        status: 'processing',
+                        payment: { method: 'Card', status: 'paid' },
+                        address: '321 Elm St, Ibadan, Nigeria'
+                    },
+                    {
+                        id: 'ORD-1005',
+                        customer: { name: 'David Brown', email: 'david@example.com', phone: '+234 805 678 9012' },
+                        date: '2024-01-23T11:00:00',
+                        items: [
+                            { name: 'Premium Non-Stick Fry Pan', quantity: 2, price: 15999 }
+                        ],
+                        subtotal: 31998,
+                        shipping: 1500,
+                        total: 33498,
+                        status: 'cancelled',
+                        payment: { method: 'Card', status: 'refunded' },
+                        address: '654 Maple Dr, Enugu, Nigeria'
+                    }
+                ];
+                localStorage.setItem('orders', JSON.stringify(orders));
+            }
+        }
+
+        // Load and display orders
+        function loadOrders() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const sortBy = document.getElementById('sortBy').value;
+            const searchTerm = document.getElementById('searchOrder').value.toLowerCase();
+            
+            let filteredOrders = [...orders];
+            
+            // Filter by status
+            if (statusFilter !== 'all') {
+                filteredOrders = filteredOrders.filter(order => order.status === statusFilter);
+            }
+            
+            // Filter by search
+            if (searchTerm) {
+                filteredOrders = filteredOrders.filter(order => 
+                    order.id.toLowerCase().includes(searchTerm) ||
+                    order.customer.name.toLowerCase().includes(searchTerm) ||
+                    order.customer.email.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+        }

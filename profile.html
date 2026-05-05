@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>About us | Naham Stores</title>
+    <style>
+        /* ----- RESET & BASE ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* UPDATED COLOR SCHEME: Replaced orange (#ff9900) with a refined 'Amber Glow' (#E67E22) 
+           - warmer, more premium, complementary to purple */
+        :root {
+            --primary: #6a0dad;
+            --primary-dark: #4b0082;
+            --primary-light: #f0e6ff;
+            --secondary: #E67E22;     /* New sophisticated coral-amber (replaces #ff9900) */
+            --secondary-light: #fdf2e6;
+            --dark: #1e1e2f;
+        }
+
+        /* BACKGROUND WALLPAPER (original style preserved) */
+        body {
+            background-image: url(logo.png);
+            background-size: 32px 32px;
+            font-family: system-ui, 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            color: var(--dark);
+            line-height: 1.4;
+            background-size: cover;
+        }
+
+        /* H1 STYLE (primary background) */
+        h1 {
+            text-align: center;
+            padding-bottom: 10px;
+            background-color: var(--primary);
+            border-radius: 20px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 16px;
+            padding-top: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        /* H3 updated to use new secondary color (instead of purple) for better consistency */
+        h3 {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-top: 12px;
+            margin-bottom: 8px;
+            letter-spacing: -0.2px;
+        }
+
+        .hd {
+            padding-bottom: 40px;
+        }
+
+        /* IMAGE CENTERING (original classes) */
+        .img {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image {
+            max-width: 100%;
+            max-height: 300px;
+            display: block;
+            border-radius: 20px;
+            object-fit: cover;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+            transition: transform 0.2s;
+        }
+
+        .image:hover {
+            transform: scale(1.01);
+        }
+
+        /* Profile/about/web cards */
+        .profile, .about, .web {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 32px;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+
+        .profile:hover, .about:hover, .web:hover {
+            box-shadow: 0 12px 24px rgba(106,13,173,0.12);
+        }
+
+        /* Social links container */
+        .links {
+            background-color: white;
+            border-radius: 20px;
+            text-align: center;
+            padding: 12px 12px 20px 12px;
+            margin-top: 20px;
+            border: 1px solid rgba(230,126,34,0.15);
+        }
+
+        /* Links heading - using new secondary color */
+        .links h3 {
+            text-align: center;
+            color: white;
+            border-radius: 40px;
+            background-color: var(--secondary);
+            display: inline-block;
+            padding: 8px 28px;
+            margin-bottom: 24px;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(230,126,34,0.3);
+        }
+
+        /* SOCIAL WRAPPER: CENTERED & BEAUTIFUL */
+        .social-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 28px;
+            margin: 16px 0 8px 0;
+        }
+
+        /* social-icon styling */
+        .social-icon {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            background: var(--secondary-light);
+            padding: 10px 14px 8px 14px;
+            border-radius: 48px;
+            min-width: 85px;
+            border: 1px solid rgba(230,126,34,0.2);
+        }
+
+        .social-icon img {
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+            transition: transform 0.2s ease, filter 0.2s;
+            object-fit: cover;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .social-icon:hover {
+            transform: translateY(-6px);
+            background: #ffffff;
+            box-shadow: 0 15px 25px rgba(230,126,34,0.2);
+            border-color: var(--secondary);
+        }
+
+        .social-icon:hover img {
+            transform: scale(1.05);
+        }
+
+        .social-label {
+            margin-top: 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--secondary);
+            letter-spacing: 0.3px;
+        }
+
+        /* h4 style - secondary color applied (replaces orange) */
+        h4 {
+            padding-bottom: 20px;
+            color: var(--secondary);
+            text-align: justify;
+            font-weight: 500;
+            line-height: 1.45;
+        }
+
+        /* Contact & address styling */
+        .cons p, .web p, .loc p {
+            margin: 8px 0;
+            font-size: 1rem;
+            background: var(--secondary-light);
+            display: inline-block;
+            padding: 6px 20px;
+            border-radius: 40px;
+            color: #2c3e50;
+        }
+
+        .loc p {
+            display: block;
+            background: var(--secondary-light);
+            padding: 10px 18px;
+            border-radius: 32px;
+        }
+
+        /* Header and navigation (polished) */
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            background: white;
+            padding: 0 2rem;
+            border-radius: 60px;
+            margin: 16px 20px 0 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            border: 1px solid rgba(106,13,173,0.1);
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            font-weight: 500;
+            color: var(--dark);
+            transition: 0.2s;
+            padding: 6px 0;
+        }
+
+        .nav-links li a:hover {
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .cart-icon, .user-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: var(--primary-light);
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+
+        .cart-icon:hover, .user-icon:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: var(--secondary);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: bold;
+            width: 20px;
+            height: 20px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-icon {
+            position: relative;
+        }
+
+        /* mobile nav */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--dark);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(230,126,34,0.2);
+            padding: 10px 16px;
+            justify-content: space-around;
+            z-index: 1000;
+            border-radius: 20px;
+
+            
+        }
+
+        .mobile-nav .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: white;
+            transition: 0.2s;
+        }
+
+        .mobile-nav .nav-item i {
+            font-size: 1.4rem;
+        }
+
+        .mobile-nav .nav-item.active, .mobile-nav .nav-item:hover {
+            color: var(--secondary);
+        }
+
+        /* container width */
+        .container {
+            max-width: 1200px;
+            margin: 24px auto;
+            padding: 0 20px 80px 20px;
+        }
+
+        /* responsive refinements */
+        @media (max-width: 780px) {
+            .header-container {
+                margin: 12px;
+                padding: 8px 16px;
+            }
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.85rem;
+            }
+            .logo {
+                font-size: 1.2rem;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .social-icon img {
+                width: 55px;
+                height: 55px;
+            }
+            .social-wrapper {
+                gap: 18px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .nav-links {
+                display: none;
+            }
+            .mobile-nav {
+                display: flex;
+            }
+            .container {
+                padding-bottom: 90px;
+            }
+            .profile, .about, .web {
+                padding: 18px;
+            }
+            .social-icon {
+                min-width: 70px;
+                padding: 6px 10px;
+            }
+            .social-icon img {
+                width: 48px;
+                height: 48px;
+            }
+        }
+
+        /* Additional polish */
+        .cons, .loc {
+            margin-bottom: 8px;
+        }
+        .about h4, .web h4 {
+            color: var(--secondary);
+            text-align: justify;
+        }
+        .links {
+            margin-top: 28px;
+        }
+
+        /* Button-like hover on contact info */
+        .cons p:hover, .web p:hover, .loc p:hover {
+            background: #fff1e6;
+            transition: 0.2s;
+        }
+    </style>
+</head>
+<body style="background-size: cover;">
+
+<header>
+    <div class="header-container">
+        <div class="logo">🍳 Naham Stores</div>
+        <ul class="nav-links">
+            <li><a href="products.html">Products</a></li>
+            <li><a href="cart.html">Cart</a></li>
+            <li><a href="user-chat.html">message</a></li>
+            <li><a href="login.html">Admin</a></li>
+        </ul>
+        <div class="header-icons">
+            <div class="cart-icon" onclick="window.location.href='cart.html'">🛒<span class="cart-count" id="cartCount">0</span></div>
+            <div class="user-icon" onclick="window.location.href='register.html'">👤</div>
+        </div>
+    </div>
+</header>
+
+<div class="mobile-nav">
+    <a href="products.html" class="nav-item active"><i>🏠</i><span>Shop</span></a>
+    <a href="cart.html" class="nav-item"><i>🛒</i><span>Cart</span></a>
+    <a href="user-chat.html" class="nav-item"><i>💬</i><span>message</span></a>
+    <a href="login.html" class="nav-item"><i>🏪</i><span>admin</span></a>
+</div>
+
+<div class="container">
+    <!-- FIRST PROFILE SECTION -->
+    <div class="profile" style="margin-top: 0;">
+        <div class="img">
+            <img class="image" src="logo.png" alt="Naham Stores showcase">
+        </div>
+    </div>
+
+    <!-- ABOUT NAHAM STORES -->
+    <div class="about">
+        <div class="hd">
+            <h1> Info about Naham Stores</h1>
+        </div>
+        <div class="cons">
+            <h4 style="padding-bottom: 20px;">
+                Naham Stores is the home of kitchen tools, utensils, cutleries and lots more in ilorin, kwara state
+            </h4>
+            <h3>Contacts:</h3>
+            <p>📞 +234 8036393001</p>
+            <p>✉️ Email: Nahamstores@gmail.com</p>
+        </div>
+        <div class="loc">
+            <h3>🏪 Address and Location:</h3>
+            <p>udhdicidcdjc</p>
+        </div>
+
+        <!-- SOCIAL MEDIA HANDLES - FULLY CENTERED WITH NEW COLOR ACCENTS -->
+        <div class="links">
+            <h3>social-media Handles</h3>
+            <div class="social-wrapper">
+                <a href="https://www.instagram.com/Naham_stores" target="_blank" class="social-icon">
+                    <img src="Instagram Logo.jpg"Instagram">
+                    <span class="social-label">Instagram</span>
+                </a>
+                <a href="https://www.tiktok.com/@Naham_" target="_blank" class="social-icon">
+                    <img src="tiktok.jpg" alt="TikTok">
+                    <span class="social-label">TikTok</span>
+                </a>
+                <a href="https://www.facebook.com/Nahamstores" target="_blank" class="social-icon">
+                    <img src="book.jpg" alt="Facebook">
+                    <span class="social-label">Facebook</span>
+                </a>
+             
+            </div>
+        </div>
+    </div>
+
+    <!-- SECOND PROFILE IMAGE -->
+    <div class="profile">
+        <div class="img">
+            <img class="image" src="dev.jpg" alt="Idev_inc. additional view">
+        </div>
+    </div>
+
+    <!-- ABOUT THIS WEBSITE (developer section) -->
+    <div class="web">
+        <h1>About this website</h1>
+        <h4 style="padding-bottom: 20px;">
+            This website was developed by idev_inc, a tech company that specializes in web development
+            graphics designs, UI/UX designs, app development and so much more
+        </h4>
+        <h3>Contacts:</h3>
+        <p>📞 +234 9022618238</p>
+        <p style="padding-bottom: 20px;">✉️ Email: idevincooperated@gmail.com</p>
+
+        <!-- Developer social links - centered beautifully -->
+        <div class="links" style="margin-top: 8px;">
+            <h3>social-media Handles</h3>
+            <div class="social-wrapper">
+                <a href="https://www.instagram.com/idev_inc" target="_blank" class="social-icon">
+                    <img src="Instagram Logo.jpg" alt="idev_inc Instagram">
+                    <span class="social-label">Instagram</span>
+                </a>
+                <a href="https://www.tiktok.com/@Naham_" target="_blank" class="social-icon">
+                    <img src="tiktok.jpg" alt="TikTok">
+                    <span class="social-label">TikTok</span>
+                </a>
+              
+                <a href="https://www.x.com/@Naham_stores" target="_blank" class="social-icon">
+                    <img src="New Twitter logo X 2023 Twitter X logo vector download _ Premium Vector.jpg" alt="X logo">
+                    <span class="social-label">X (Twitter)</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cart count functionality (unchanged) -->
+<script>
+    function updateCartCount() {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        let cartSpan = document.getElementById('cartCount');
+        if (cartSpan) cartSpan.innerText = totalItems;
+    }
+    updateCartCount();
+    window.addEventListener('storage', updateCartCount);
+    document.addEventListener('DOMContentLoaded', updateCartCount);
+</script>
+</body>
+</html>
