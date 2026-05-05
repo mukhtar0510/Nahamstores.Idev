@@ -192,7 +192,7 @@
             
             if (username === 'admin' && password === 'admin123') {
                 localStorage.setItem('adminLoggedIn', 'true');
-                window.location.href = 'dashboard.html';
+                window.location.href = 'index.html';
             } else {
                 document.getElementById('errorMsg').textContent = '❌ Invalid username or password (use admin / admin123)';
             }
